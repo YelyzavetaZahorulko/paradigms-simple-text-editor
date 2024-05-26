@@ -1,0 +1,3 @@
+/Users/yelyzaveta/CLionProjects/simple_text_editor/paradigms-simple-text-editor/cmake-build-debug/CMakeFiles/paradigms_simple_text_editor.dir
+/Users/yelyzaveta/CLionProjects/simple_text_editor/paradigms-simple-text-editor/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/yelyzaveta/CLionProjects/simple_text_editor/paradigms-simple-text-editor/cmake-build-debug/CMakeFiles/rebuild_cache.dir
