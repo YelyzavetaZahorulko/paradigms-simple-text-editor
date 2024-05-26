@@ -13,8 +13,8 @@ struct TextContainer {
     int capacity;
 };
 
-struct TextContainer text[MAX_LINES];
-int current_line = 0;
+TextContainer* text_array;
+int line_count = 0;
 
 void printHelp(){
     printf("Commands: \n");
@@ -28,14 +28,14 @@ void printHelp(){
     printf("8 - clear the console \n");
 }
 
-void freeTextContainer(struct TextContainer* container) {
+void freeTextContainer(TextContainer* container) {
     free(container->buffer);
     container->buffer = NULL;
     container->current_size = 0;
     container->capacity = 0;
 }
 
-void initTextContainer(struct TextContainer* container) {
+void initTextContainer(TextContainer* container) {
     container->buffer = (char*)malloc(INITIAL_CAPACITY * sizeof(char));
     if (container->buffer == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
@@ -45,7 +45,7 @@ void initTextContainer(struct TextContainer* container) {
     container->capacity = INITIAL_CAPACITY;
 }
 
-void resizeTextContainer(struct TextContainer* container, int new_capacity) {
+void resizeTextContainer(TextContainer* container, int new_capacity) {
     container->buffer = (char*)realloc(container->buffer, new_capacity * sizeof(char));
     if (container->buffer == NULL) {
         fprintf(stderr, "Memory reallocation failed\n");
@@ -55,20 +55,21 @@ void resizeTextContainer(struct TextContainer* container, int new_capacity) {
 }
 
 void appendText(char* text_to_append) {
-    if (current_line < MAX_LINES) {
-        struct TextContainer* line = &text[current_line];
-        initTextContainer(line);
-
-        int append_length = strlen(text_to_append);
-        if (line->current_size + append_length >= line->capacity) {
-            resizeTextContainer(line, line->current_size + append_length + 1);
+    if (line_count == 0 || text_array[line_count - 1].current_size + strlen(text_to_append) + 1 > text_array[line_count - 1].capacity) {
+        // Start a new line if there is no line or the current line is full
+        if (line_count > 0) {
+            line_count++;
         }
-        strcpy(line->buffer, text_to_append);
-        line->current_size = append_length;
-        current_line++;
-    } else {
-        printf("Error: Maximum number of lines reached.\n");
+        text_array = (TextContainer*)realloc(text_array, line_count * sizeof(TextContainer));
+        initTextContainer(&text_array[line_count - 1]);
     }
+    TextContainer* line = &text_array[line_count - 1];
+    int append_length = strlen(text_to_append);
+    if (line->current_size + append_length + 1 > line->capacity) {
+        resizeTextContainer(line, line->current_size + append_length + 1);
+    }
+    strcat(line->buffer, text_to_append);
+    line->current_size += append_length;
 }
 
 void handleСommand(int command) {
