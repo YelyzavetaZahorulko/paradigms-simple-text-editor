@@ -1,2 +1,10 @@
 # ninja log v5
 1	186	1716747314841746293	CMakeFiles/paradigms_simple_text_editor.dir/main.cpp.o	16c402e12040679b
+2	257	1716756662886259608	CMakeFiles/paradigms_simple_text_editor.dir/main.cpp.o	90d0c264e0b76a0d
+257	388	1716756663017490881	paradigms_simple_text_editor	9178c9d8a11e02c2
+4	202	1716757433757586406	CMakeFiles/paradigms_simple_text_editor.dir/main.cpp.o	90d0c264e0b76a0d
+202	312	1716757433867157212	paradigms_simple_text_editor	9178c9d8a11e02c2
+2	168	1716757475113720048	CMakeFiles/paradigms_simple_text_editor.dir/main.cpp.o	90d0c264e0b76a0d
+168	256	1716757475201835911	paradigms_simple_text_editor	9178c9d8a11e02c2
+2	160	1716757497470909683	CMakeFiles/paradigms_simple_text_editor.dir/main.cpp.o	90d0c264e0b76a0d
+160	243	1716757497553738416	paradigms_simple_text_editor	9178c9d8a11e02c2
