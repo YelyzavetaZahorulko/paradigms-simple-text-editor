@@ -101,15 +101,18 @@ void loadFromFile(char* filename) {
         text_array[line_count - 1].current_size = len;
     }
     fclose(file);
-    printf("Text has been loaded successfully");
+
+    for (int i = 0; i < line_count; i++) {
+        printf("%s\n", text_array[i].buffer);
+    }
 }
 
 void printText() {
     if (line_count == 0) {
-        printf("Text container is empty.\n");
+        printf(">Text container is empty.\n");
         return;
     }
-    printf("Current text:\n>");
+    printf(">Current text:\n");
     for (int i = 0; i < line_count; i++) {
         printf("%s\n", text_array[i].buffer);
     }
@@ -135,15 +138,19 @@ void insertText(int line, int index, char* text_to_insert) {
 }
 
 void search_word(char* word) {
+    int found_count = 0;
     for (int i = 0; i < line_count; i++) {
-        char* found = strstr(text_array[i].buffer, word);
-        if (found) {
+        char* found = text_array[i].buffer;
+        while ((found = strstr(found, word)) != NULL) {
             int word_index = (int)(found - text_array[i].buffer);
-            printf("Found '%s' at line %d, index %d\n", word, i, word_index);
-            return;
+            printf(">Found '%s' at line %d, index %d\n", word, i, word_index);
+            found += strlen(word); // Move past the last found word
+            found_count++;
         }
     }
-    printf("Word '%s' not found.\n", word);
+    if (found_count == 0) {
+        printf(">Word '%s' not found.\n", word);
+    }
 }
 
 void freeMemory() {
