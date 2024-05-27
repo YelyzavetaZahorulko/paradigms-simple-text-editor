@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 
 #define INITIAL_CAPACITY 100
@@ -25,6 +25,7 @@ void printHelp(){
     printf("5 - print the current text to console \n");
     printf("6 - insert the text  by line and symbol index \n");
     printf("7 - search <word> \n");
+    printf("8 - exit the program\n");
 }
 
 void freeTextContainer(TextContainer* container) {
@@ -89,7 +90,7 @@ void loadFromFile(char* filename) {
     char buffer[MAX_LINE_LENGTH];
     line_count = 0;
     while (fgets(buffer, MAX_LINE_LENGTH, file) != NULL) {
-        buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
+        buffer[strcspn(buffer, "\n")] = '\0'; 
         line_count++;
         text_array = (TextContainer*)realloc(text_array, line_count * sizeof(TextContainer));
         initTextContainer(&text_array[line_count - 1]);
@@ -144,7 +145,7 @@ void search_word(char* word) {
         while ((found = strstr(found, word)) != NULL) {
             int word_index = (int)(found - text_array[i].buffer);
             printf(">Found '%s' at line %d, index %d\n", word, i, word_index);
-            found += strlen(word); // Move past the last found word
+            found += strlen(word);
             found_count++;
         }
     }
@@ -160,12 +161,15 @@ void freeMemory() {
     free(text_array);
 }
 
-void handleСommand(int command) {
-    char input[256];
+void handleCommand(int command) {
+    char* input = NULL;
+    size_t input_size = 0;
     if (command == 1) {
+        char* input = NULL;
+        size_t input_size = 0;
         printf("Enter text to append: ");
-        fgets(input, sizeof(input), stdin);
-        input[strcspn(input, "\n")] = '\0'; // Remove newline character
+        getline(&input, &input_size, stdin);
+        input[strcspn(input, "\n")] = '\0';
         appendText(input);
     }
     else if (command == 2) {
@@ -175,13 +179,11 @@ void handleСommand(int command) {
     }
     else if (command == 3) {
         printf("Enter filename to save: ");
-        fgets(input, sizeof(input), stdin);
-        input[strcspn(input, "\n")] = '\0'; // Remove newline character
+        getline(&input, &input_size, stdin);
         saveToFile(input);
     } else if (command == 4) {
         printf("Enter filename to load: ");
-        fgets(input, sizeof(input), stdin);
-        input[strcspn(input, "\n")] = '\0'; // Remove newline character
+        getline(&input, &input_size, stdin);
         loadFromFile(input);
     }
     else if (command == 5) {
@@ -193,16 +195,20 @@ void handleСommand(int command) {
         printf("Enter index: ");
         int index;
         scanf("%d", &index);
-        getchar(); // Clear the newline character from the buffer
+        getchar();
         printf("Enter text to insert: ");
         fgets(input, sizeof(input), stdin);
-        input[strcspn(input, "\n")] = '\0'; // Remove newline character
+        input[strcspn(input, "\n")] = '\0';
         insertText(line, index, input);
     } else if (command == 7) {
         printf("Enter word to search: ");
         fgets(input, sizeof(input), stdin);
-        input[strcspn(input, "\n")] = '\0'; // Remove newline character
+        input[strcspn(input, "\n")] = '\0';
         search_word(input);
+    }
+    else if (command == 8) {
+        freeMemory();
+        exit(0);
     }
     else {
         printf("The command is not implemented.\n");
@@ -224,17 +230,17 @@ int main() {
         printf("\nChoose the command: \n>");
         if (scanf("%d", &command) != 1) {
             printf("Invalid input. Please enter a number.\n");
-            while (getchar() != '\n'); // Clear the input buffer
+            while (getchar() != '\n');
             continue;
         }
-        getchar(); // Clear the newline character from the buffer
+        getchar();
 
-        if (command < 1 || command > 9) {
-            printf("Invalid command number. Please enter a number between 1 and 9.\n");
+        if (command < 1 || command > 8) {
+            printf("Invalid command number. Please enter a number between 1 and 8.\n");
             continue;
         }
 
-        handleСommand(command);
+        handleCommand(command);
     }
     return 0;
 }
